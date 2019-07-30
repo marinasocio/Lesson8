@@ -15,40 +15,44 @@ function makeRequest(method, url, cb) {
 	xhr.send();
 }
 
-makeRequest('GET', 'https://jsonplaceholder.typicode.com/users', res => {
+makeRequest('GET', 'https://jsonplaceholder.typicode.com/users', (res) => {
 	renderUsers(res);
 });
 
 function renderUsers(users) {
-	users.forEach(user => {
+	users.forEach((user) => {
 		const p = document.createElement('p');
+		p.setAttribute('id', 'number');
 		document.body.appendChild(p);
 
 		var newButton = document.createElement('button');
 		newButton.innerHTML = user.name;
 		newButton.type = 'button';
-		newButton.classList.add ('btn', 'btn-info');
+		newButton.classList.add('btn', 'btn-info');
 		newButton.setAttribute('data-toggle', 'collapse');
 		newButton.setAttribute('data-target', '#collapseExample');
 		newButton.setAttribute('aria-expanded', false);
 		newButton.setAttribute('aria-controls', 'collapseExample');
 		p.appendChild(newButton);
-		
+
 		var newDiv = document.createElement('div');
-		newDiv.classList.add ('collapse', 'in');
+		newDiv.classList.add('collapse', 'in');
 		newDiv.setAttribute('id', 'collapseExample');
-		p.appendChild(newDiv);
+		p.parentNode.insertBefore(newDiv, p.nextSibling);
 		for (var key in user) {
-			if (user.hasOwnProperty(key)){
-				console.log(key,user[key]);
+			if (user.hasOwnProperty(key)) {
+				console.log(key, user[key]);
 				var newCard = document.createElement('div');
-				newCard.innerHTML = `${user[key] || ''} ${user[key].street || ''} ${user[key].name || ''}`;
-				// newCard.innerHTML = `${user[key] || ''} ${user[key].address && user[key].address.street ? user[key].address.street: ''}`;
-				newCard.classList.add ('card', 'card-body');
+				if (key === 'address') {
+					newCard.innerHTML = `${user[key].city} ${user[key].street}`;
+				} else if (key === 'company') {
+					newCard.innerHTML = `${user[key].name} ${user[key].catchPhrase}`;
+				} else {
+					newCard.innerHTML = user[key];
+				}
+				newCard.classList.add('card', 'card-body');
 				newDiv.appendChild(newCard);
 			}
 		}
-		
 	});
 }
-
