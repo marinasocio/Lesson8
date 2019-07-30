@@ -41,7 +41,6 @@ function renderUsers(users) {
 		p.parentNode.insertBefore(newDiv, p.nextSibling);
 		for (var key in user) {
 			if (user.hasOwnProperty(key)) {
-				console.log(key, user[key]);
 				var newCard = document.createElement('div');
 				if (key === 'address') {
 					newCard.innerHTML = `${user[key].city} ${user[key].street}`;
